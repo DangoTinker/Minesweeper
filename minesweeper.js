@@ -8,33 +8,29 @@
 
   window.onload = function(){
 
-    /*点击开始*/
+ 
       document.getElementById("start_draw").onclick = function(){
       init();
     };
 
-    /*调范围按钮*/
     document.getElementById("seleArea").onchange = function () {
       Common.WIDTH = this.value;
       Common.HEIGHT = this.value;
       init();
     };
-
-    /*调大小按钮*/
+   
     document.getElementById("selSize").onchange = function () {
       Common.TABLE_WIDTH = this.value;
       Common.TBALE_HEIGHT = this.value;
       init();
     };
 
-    /*调布雷数量*/
     document.getElementById("selCount").onchange = function () {
       Common.BOOMACOUNT = this.value;
       init();
     };
 }
 
-  /*方格属性*/
   var Common = new function () {
     this.ARRAY= [];
     this.WIDTH =20;
@@ -45,7 +41,6 @@
     this.BOOMARROUNDCOUNT=0;
   };
 
-  /*初始化属性*/
   function init(){
     Common.ARRAY = makeArray(Common.WIDTH, Common.HEIGHT);
     var BOOMEARA = [];
@@ -54,7 +49,6 @@
     document.getElementById('game_area').innerHTML =  makeTable(Common.ARRAY);
   }
 
-  /*初始化雷区*/
   function initBOOM( arr, num) {
     for (var i = 0; i < num; i++) {
       var area = makeRandomBoom(arr);
@@ -67,7 +61,6 @@
     return arr;
   }
 
-  /*根据二维数组生成表格*/
   function makeTable(array) {
     x = array[0].length;
     y = array.length;
@@ -81,17 +74,13 @@
       html.push("</tr>");
     }
     html.push("</table>");
-    // console.log("html："+html);
     return html;
   }
-
-  //表格单元被点击
   function tableOnclik(x,y){
     console.log("点击坐标："+"（"+x+","+y+")");
     if( "a" == Common.ARRAY[x][y]){
       draw(x,y, "white");
       document.getElementById('gtable').rows[x].cells[y].innerHTML = boomCount(x,y);
-      //点击如果雷数为零，让周围变为白色
       if ( boomCount(x,y) == 0) {
         var arr = Common.ARRAY;
         if( "a" == arr[x-1][y-1]){draw(x-1,y-1, "white");}
@@ -106,11 +95,11 @@
     }else if( "b" == Common.ARRAY[x][y]){
       console.log("----------------踩住雷了-------------------------");
       drawAllColor(Common.ARRAY);
-      //gameOver();
+  
     }
   }
 
-  /*画点*/
+
   function draw( i,j,color ) {
     var x=document.getElementById('gtable').rows[i].cells[j];
     x.style.background = color;
@@ -120,7 +109,6 @@
   function drawAllColor( arr) {
     var x = arr[0].length;
     var y = arr.length;
-    // console.log("坐标："+"（"+x+","+y+")");
     for (var i = 0; i < x; i++) {
       for (var j = 0; j < y; j++) {
           if( "b" == arr[i][j]){
@@ -134,7 +122,7 @@
     return arr;
   }
 
-  /*游戏结束*/
+  
   function gameOver(){
     if (Common.BOOMARROUNDCOUNT == 0) {
         alert("-出师未捷身先死-");
@@ -145,14 +133,14 @@
     init();
   }
 
-  /*周围雷的个数*/
+  
   function boomCount(x,y){
     console.log("boomCount-点击坐标："+"（"+x+","+y+")");
     var arr = Common.ARRAY;
-    //将周围雷的个数置零
+   
     Common.BOOMARROUNDCOUNT = 0;
 
-    //中间
+ 
     if(x!=0 && y!=0 && x!=Common.WIDTH -1 && y!=Common.HEIGHT-1) {
 
       if( "b" == arr[x-1][y-1]){ Common.BOOMARROUNDCOUNT = Common.BOOMARROUNDCOUNT + 1;}
@@ -163,10 +151,10 @@
       if( "b" == arr[x+1][y-1]){ Common.BOOMARROUNDCOUNT = Common.BOOMARROUNDCOUNT + 1;}
       if( "b" == arr[x+1][y]){ Common.BOOMARROUNDCOUNT = Common.BOOMARROUNDCOUNT + 1;}
       if( "b" == arr[x+1][y+1]){ Common.BOOMARROUNDCOUNT = Common.BOOMARROUNDCOUNT + 1;}
-      // console.log("-=count=-"+Common.BOOMARROUNDCOUNT);
+    
     }
 
-    //边角
+   
     else if((x==0 && y==0)
       || (x==Common.WIDTH-1 && y==Common.HEIGHT-1)
       ||(x==Common.WIDTH-1 && y==0)
@@ -182,7 +170,7 @@
       }
     }
 
-    //边框
+   
     else
     {
       console.log("边框");
@@ -195,7 +183,7 @@
     return Common.BOOMARROUNDCOUNT;
   }
 
-  /*初始化数组*/
+
   function makeArray( x, y) {
     var array = [];
     for (var i = 0; i < x; i++) {
@@ -210,7 +198,7 @@
 
 
 
-  /*产生随机的雷*/
+
   function makeRandomBoom(arr){
     var x = Math.floor( Math.random()*arr[0].length % arr[0].length );
     var y = Math.floor( Math.random()*arr.length % arr.length );
